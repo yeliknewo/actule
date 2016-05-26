@@ -1,6 +1,15 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-    }
-}
+extern crate id_alloc;
+extern crate piston_window;
+
+pub use piston_window::*;
+
+mod game;
+mod world;
+mod entity;
+mod components;
+mod utils;
+
+pub use self::game::*;
+pub use self::world::*;
+pub use self::entity::*;
+pub use self::components::*;
