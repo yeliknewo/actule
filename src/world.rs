@@ -5,6 +5,7 @@ use id_alloc::{IdTrait};
 use entity::{Entity};
 use utils::{Layer};
 
+#[derive(Debug)]
 pub struct World<I: IdTrait, T: Entity<I, T>> {
     entities: HashMap<I, T>,
     names: HashMap<&'static str, I>,

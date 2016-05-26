@@ -4,6 +4,7 @@ use id_alloc::{Node, IdTrait};
 use entity::{Entity};
 use world::{World};
 
+#[derive(Debug)]
 pub struct Game<I: IdTrait, T: Entity<I, T>> {
     world: World<I, T>,
 }
