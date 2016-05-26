@@ -1,11 +1,11 @@
 use std::collections::{HashMap, HashSet};
 
-use id_alloc::{Id};
+use id_alloc::{IdTrait};
 
 use entity::{Entity};
 use utils::{Layer};
 
-pub struct World<I: Id, T: Entity<I, T>> {
+pub struct World<I: IdTrait, T: Entity<I, T>> {
     entities: HashMap<I, T>,
     names: HashMap<&'static str, I>,
     tick_ids: Option<HashSet<I>>,
@@ -13,7 +13,7 @@ pub struct World<I: Id, T: Entity<I, T>> {
     active_layers: Vec<Layer>,
 }
 
-impl<I: Id, T: Entity<I, T>> World<I, T> {
+impl<I: IdTrait, T: Entity<I, T>> World<I, T> {
     #[inline]
     pub fn new() -> World<I, T> {
         World {

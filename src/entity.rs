@@ -1,9 +1,9 @@
-use id_alloc::{Id, Node};
+use id_alloc::{IdTrait, Node};
 
 use world::{World};
 use components::{Renderable, Transform};
 
-pub trait Entity<I: Id, T: Entity<I, T>> {
+pub trait Entity<I: IdTrait, T: Entity<I, T>> {
     fn get_id(&self) -> I;
     fn get_renderable(&self) -> Option<&Box<Renderable>>;
     fn get_transform(&self) -> Option<&Box<Transform>>;

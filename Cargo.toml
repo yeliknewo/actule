@@ -1,8 +1,8 @@
 [package]
 name = "actule"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Kiley Owen <yelikdev@gmail.com>"]
 
 [dependencies]
 piston_window = "0.47.0"
-id_alloc = {git = "https://github.com/yeliknewo/id_alloc.git", version = "0.4.1"}
+id_alloc = {git = "https://github.com/yeliknewo/id_alloc.git", version = "0.4.2"}

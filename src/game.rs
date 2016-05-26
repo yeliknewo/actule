@@ -1,14 +1,14 @@
 use piston_window::{PistonWindow, clear, UpdateEvent, BuildFromWindowSettings, Window, AdvancedWindow, OpenGLWindow, GenericEvent};
-use id_alloc::{Node, Id};
+use id_alloc::{Node, IdTrait};
 
 use entity::{Entity};
 use world::{World};
 
-pub struct Game<I: Id, T: Entity<I, T>> {
+pub struct Game<I: IdTrait, T: Entity<I, T>> {
     world: World<I, T>,
 }
 
-impl<I: Id, T: Entity<I, T>> Game<I, T> {
+impl<I: IdTrait, T: Entity<I, T>> Game<I, T> {
     pub fn new() -> Game<I, T> {
         Game {
             world: World::new(),
