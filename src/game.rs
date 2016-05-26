@@ -1,15 +1,17 @@
+use std::hash::Hash;
+
 use piston_window::{PistonWindow, clear, UpdateEvent, BuildFromWindowSettings, Window, AdvancedWindow, OpenGLWindow, GenericEvent};
-use id_alloc::{Node, IdTrait};
+use id_alloc::*;
 
 use entity::{Entity};
 use world::{World};
 
 #[derive(Debug)]
-pub struct Game<I: IdTrait, T: Entity<I, T>> {
+pub struct Game<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> {
     world: World<I, T>,
 }
 
-impl<I: IdTrait, T: Entity<I, T>> Game<I, T> {
+impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> Game<I, T> {
     pub fn new() -> Game<I, T> {
         Game {
             world: World::new(),

@@ -1,9 +1,11 @@
-use id_alloc::{IdTrait, Node};
+use std::hash::Hash;
+
+use id_alloc::*;
 
 use world::{World};
 use components::{Renderable, Transform};
 
-pub trait Entity<I: IdTrait, T: Entity<I, T>> {
+pub trait Entity<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> {
     fn get_id(&self) -> I;
     fn get_renderable(&self) -> Option<&Box<Renderable>>;
     fn get_transform(&self) -> Option<&Box<Transform>>;

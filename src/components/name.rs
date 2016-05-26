@@ -1,4 +1,6 @@
-use id_alloc::{IdTrait};
+use std::hash::Hash;
+
+use id_alloc::*;
 
 use world::{World};
 use entity::{Entity};
@@ -9,7 +11,7 @@ pub struct Name {
 }
 
 impl Name {
-    pub fn new<I: IdTrait, T: Entity<I, T>>(name: &'static str, id: I, world: &mut World<I, T>) -> Name {
+    pub fn new<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>>(name: &'static str, id: I, world: &mut World<I, T>) -> Name {
         world.register_name(id, name);
         Name {
             name: name,
