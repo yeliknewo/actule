@@ -1,8 +1,7 @@
-extern crate id_alloc;
-extern crate piston_window;
-
-pub use piston_window::*;
-pub use id_alloc::*;
+pub extern crate id_alloc;
+pub extern crate piston_window;
+pub extern crate ncollide;
+pub extern crate nalgebra;
 
 mod game;
 mod world;

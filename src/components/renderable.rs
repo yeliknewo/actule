@@ -2,7 +2,9 @@ use piston_window::{polygon, Context, G2d};
 use piston_window::math::{Matrix2d, Vec2d, identity, multiply};
 use piston_window::types::{Color};
 
-use utils::{Layer};
+use nalgebra::{Vector2};
+
+use utils::*;
 
 #[derive(Debug)]
 pub struct Renderable {
@@ -13,11 +15,15 @@ pub struct Renderable {
 }
 
 impl Renderable {
-    pub fn new(layer: Layer, polygon: Vec<Vec2d>, color: Color) -> Renderable {
+    pub fn new(layer: Layer, polygon: Vec<Vector2<Coord>>, color: Color) -> Renderable {
+        let mut polygon_piston = vec!();
+        for point in polygon {
+            polygon_piston.push([point.x, point.y]);
+        }
         Renderable {
             layer: layer,
             color: color,
-            polygon: polygon,
+            polygon: polygon_piston,
             matrix: identity(),
         }
     }
@@ -34,7 +40,15 @@ impl Renderable {
         &self.color
     }
 
-    pub fn get_polygon(&self) -> &Vec<Vec2d> {
+    pub fn get_polygon(&self) -> Vec<Vector2<Coord>> {
+        let mut polygon = vec!();
+        for point in self.polygon.iter() {
+            polygon.push(Vector2::new(point[0], point[1]));
+        }
+        polygon
+    }
+
+    pub fn get_polygon_piston(&self) -> &Vec<Vec2d> {
         &self.polygon
     }
 
@@ -50,7 +64,15 @@ impl Renderable {
         self.color = color;
     }
 
-    pub fn set_polygon(&mut self, polygon: Vec<Vec2d>) {
+    pub fn set_polygon(&mut self, polygon: Vec<Vector2<Coord>>) {
+        let mut polygon_piston = vec!();
+        for point in polygon {
+            polygon_piston.push([point.x, point.y]);
+        }
+        self.polygon = polygon_piston;
+    }
+
+    pub fn set_polygon_piston(&mut self, polygon: Vec<Vec2d>) {
         self.polygon = polygon;
     }
 

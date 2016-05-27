@@ -1,8 +1,10 @@
 [package]
 name = "actule"
-version = "0.3.1"
+version = "0.4.0"
 authors = ["Kiley Owen <yelikdev@gmail.com>"]
 
 [dependencies]
 piston_window = "0.47.0"
 id_alloc = {git = "https://github.com/yeliknewo/id_alloc.git", version = "0.4.3"}
+ncollide = "0.9.1"
+nalgebra = "0.8.2"
