@@ -1,8 +1,7 @@
 use piston_window::math::{Vec2d, multiply, translate, rotate_radians, scale};
 use nalgebra::{Vector1, Vector2, Isometry2, Rotation, Translation};
 
-use components::*;
-use utils::*;
+use actule::*;
 
 #[derive(Debug)]
 pub struct Transform {

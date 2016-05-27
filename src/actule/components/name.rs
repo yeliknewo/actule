@@ -2,8 +2,7 @@ use std::hash::Hash;
 
 use id_alloc::*;
 
-use world::{World};
-use entity::{Entity};
+use actule::*;
 
 #[derive(Debug)]
 pub struct Name {

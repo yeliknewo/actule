@@ -3,8 +3,7 @@ use std::hash::Hash;
 use piston_window::{PistonWindow, clear, UpdateEvent, BuildFromWindowSettings, Window, AdvancedWindow, OpenGLWindow, GenericEvent};
 use id_alloc::*;
 
-use entity::{Entity};
-use world::{World};
+use actule::*;
 
 #[derive(Debug)]
 pub struct Game<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> {

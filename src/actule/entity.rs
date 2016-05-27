@@ -2,8 +2,7 @@ use std::hash::Hash;
 
 use id_alloc::*;
 
-use world::{World};
-use components::{Renderable, Transform};
+use actule::*;
 
 pub trait Entity<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> {
     fn get_id(&self) -> I;
