@@ -14,3 +14,46 @@ pub trait Entity<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy +
     fn tick(&mut self, dt: f64, manager: &mut Node<I>, world: &mut World<I, T>);
     fn is_tick(&self) -> bool;
 }
+
+#[macro_export]
+macro_rules! impl_component_for_entity {
+    ($t: ty, $p: ident, $c: ty, $so: ident, $s: ident, $w: ident, $g: ident, $m: ident, $ta: ident, $gi: ident) => (
+        impl $t {
+            #[inline]
+            pub fn $so (&mut self, $p: Option<Box<$c>>) {
+                self.$p = $p;
+            }
+
+            #[inline]
+            pub fn $s (&mut self, $p: $c) {
+                self.$so(Some(Box::new($p)));
+            }
+
+            #[inline]
+            pub fn $w (mut self, $p: $c) -> $t {
+                self.$s($p);
+                self
+            }
+
+            #[inline]
+            pub fn $g (&self) -> Option<&Box<$c>> {
+                self.$p.as_ref()
+            }
+
+            #[inline]
+            pub fn $m (&mut self) -> Option<&mut Box<$c>> {
+                self.$p.as_mut()
+            }
+
+            #[inline]
+            pub fn $ta (&mut self) -> Option<Box<$c>> {
+                self.$p.take()
+            }
+
+            #[inline]
+            pub fn $gi (&mut self, $p: Box<$c>) {
+                self.$p = Some($p);
+            }
+        }
+    )
+}
