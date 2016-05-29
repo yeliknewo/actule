@@ -8,12 +8,14 @@ use actule::*;
 #[derive(Debug)]
 pub struct Game<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> {
     world: World<I, T>,
+    keyboard: Keyboard
 }
 
 impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> Game<I, T> {
     pub fn new() -> Game<I, T> {
         Game {
             world: World::new(),
+            keyboard: Keyboard::new()
         }
     }
 
