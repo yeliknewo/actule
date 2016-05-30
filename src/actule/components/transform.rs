@@ -57,10 +57,12 @@ impl Transform {
     }
 
     pub fn get_mut_isometry(&mut self) -> &mut Isometry2<Coord> {
+        self.dirty = true;
         &mut self.isometry2
     }
 
     pub fn get_mut_scale(&mut self) -> &mut Vector2<Coord> {
+        self.dirty = true;
         &mut self.scale
     }
 }
