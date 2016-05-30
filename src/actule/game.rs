@@ -54,7 +54,7 @@ impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: En
                 if let Some(tick_ids) = self.world.take_tick_ids() {
                     for id in tick_ids.iter() {
                         if let Some(mut entity) = self.world.take_entity_by_id(*id) {
-                            entity.tick(args.dt, manager, &mut self.world, &mut self.keyboard);
+                            entity.tick(args.dt, manager, &mut self.world, &self.keyboard);
                             self.world.give_entity(entity);
                         }
                     }

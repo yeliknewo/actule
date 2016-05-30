@@ -15,7 +15,6 @@ pub struct Keyboard {
 
 impl Keyboard {
     pub fn new() -> Keyboard {
-        //should Keyboard start with some keys like ESC and arrow keys already inserted?
         Keyboard {
             state: HashMap::new()
         }
