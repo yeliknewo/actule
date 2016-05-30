@@ -5,7 +5,8 @@ use std::collections::HashMap;
 
 
 const ESC: Button = Button::Keyboard(Key::Escape);
-#[derive(Debug, PartialEq)]
+
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub enum KeyState {
     Pressed,
     Released
@@ -30,26 +31,19 @@ impl Keyboard {
         println!("added a new key {:?}", new_key);
     }
     pub fn set_key(&mut self, key: Button, key_state: KeyState) {
-        *self.state.get_mut(&key).unwrap() = key_state;
+        self.state.insert(key, key_state);
 
     }
     pub fn read_keystate(&self, key: Button) -> &KeyState {
         self.state.get(&key).expect("key does not exist")
     }
-    pub fn take_input(&mut self, input: Input) {
+    pub fn update(&mut self, input: Input) {
         match input {
-            //could probably write a macro for this
-            Input::Press(ESC) => {
-                if self.read_keystate(ESC) != &KeyState::Pressed {
-                    self.set_key(ESC, KeyState::Pressed)
-                }
-                else {}
+            Input::Press(button) => {
+                self.set_key(button, KeyState::Pressed)
             }
-            Input::Release(ESC) => {
-                if self.read_keystate(ESC) != &KeyState::Pressed {
-                    self.set_key(ESC, KeyState::Pressed)
-                }
-                else {}
+            Input::Release(button) => {
+                self.set_key(button, KeyState::Released)
             }
             _ => ()
         }
