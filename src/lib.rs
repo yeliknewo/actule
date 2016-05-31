@@ -9,12 +9,12 @@ pub mod actule {
     mod entity;
     mod components;
     mod utils;
-    mod keyboard;
+    mod input;
 
     pub use self::game::*;
     pub use self::world::*;
     pub use self::entity::*;
-    pub use self::keyboard::*;
+    pub use self::input::*;
     pub use self::components::*;
     pub use self::utils::*;
 }
