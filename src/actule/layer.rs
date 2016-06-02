@@ -27,6 +27,7 @@ impl<T: Eq + Hash + Ord + Clone, I: Eq + Hash> Layered<T, I> {
         self.active_layers.push(layer_id);
         self.active_layers.sort();
         self.active_layers.dedup();
+        self.layers = Some(layers);
     }
 
     pub fn remove(&mut self, layer_id: T, item: I) {
