@@ -12,6 +12,7 @@ pub trait Entity<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy +
     fn get_mut_transform(&mut self) -> Option<&mut Box<Transform>>;
     fn tick(&mut self, dt: f64, manager: &mut Node<I>, world: &mut World<I, T>, minput: &Minput);
     fn is_tick(&self) -> bool;
+    fn get_tick_layer(&self) -> Layer;
 }
 
 #[macro_export]

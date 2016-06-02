@@ -1,5 +1,5 @@
 use std::hash::Hash;
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap};
 
 use id_alloc::*;
 
@@ -9,9 +9,8 @@ use actule::*;
 pub struct World<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> {
     entities: HashMap<I, T>,
     names: HashMap<&'static str, I>,
-    tick_ids: Option<HashSet<I>>,
-    render_ids: HashMap<Layer, HashSet<I>>,
-    active_layers: Vec<Layer>,
+    tick_layers: Option<Layered<Layer, I>>,
+    render_layers: Layered<Layer, I>,
 }
 
 impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> World<I, T> {
@@ -20,9 +19,8 @@ impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: En
         World {
             entities: HashMap::new(),
             names: HashMap::new(),
-            tick_ids: Some(HashSet::new()),
-            render_ids: HashMap::new(),
-            active_layers: vec!(),
+            tick_layers: Some(Layered::new()),
+            render_layers: Layered::new(),
         }
     }
 
@@ -38,11 +36,6 @@ impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: En
     #[inline]
     pub fn deregister_name(&mut self, name: &'static str) {
         self.names.remove(name);
-    }
-
-    #[inline]
-    pub fn get_active_layers(&self) -> &Vec<Layer> {
-        &self.active_layers
     }
 
     #[inline]
@@ -102,44 +95,42 @@ impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: En
     fn add_event_ids(&mut self, id: I) {
         let mut tick = false;
         let mut render = false;
-        let mut layer = 0;
+
+        let mut tick_layer = 0;
+        let mut render_layer = 0;
 
         if let Some(entity) = self.get_entity_by_id(id) {
             tick = entity.is_tick();
+            tick_layer = entity.get_tick_layer();
             if let Some(renderable) = entity.get_renderable() {
                 render = true;
-                layer = renderable.get_layer();
+                render_layer = renderable.get_layer();
             }
         }
 
         if tick {
-            self.tick_ids.as_mut().expect("Tick ids was none in add event Ids").insert(id);
+            self.tick_layers.as_mut().expect("Tick Layers was none").add(tick_layer, id);
         }
 
         if render {
-            if self.render_ids.contains_key(&layer) {
-                self.render_ids.get_mut(&layer).expect("Render ids was none somehow").insert(id);
-            } else {
-                let mut layer_set = HashSet::new();
-                layer_set.insert(id);
-                self.render_ids.insert(layer, layer_set);
-            }
-            self.active_layers.push(layer);
-            self.active_layers.sort();
-            self.active_layers.dedup();
+            self.render_layers.add(render_layer, id);
         }
     }
 
     fn remove_event_ids(&mut self, id: I) {
-        self.tick_ids.as_mut().expect("Tick ids was none in remove event ids").remove(&id);
-        let mut layer = 0;
+        let mut tick_layer = None;
+        let mut render_layer = None;
         if let Some(entity) = self.get_entity_by_id(id) {
+            tick_layer = Some(entity.get_tick_layer());
             if let Some(renderable) = entity.get_renderable() {
-                layer = renderable.get_layer();
+                render_layer = Some(renderable.get_layer());
             }
         }
-        if let Some(layer_set) = self.render_ids.get_mut(&layer) {
-            layer_set.remove(&id);
+        if let Some(layer) = tick_layer {
+            self.tick_layers.as_mut().expect("Tick layers was none").remove(layer, id);
+        }
+        if let Some(layer) = render_layer {
+            self.render_layers.remove(layer, id);
         }
     }
 
@@ -150,17 +141,32 @@ impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: En
     }
 
     #[inline]
-    pub fn get_render_ids(&self) -> &HashMap<Layer, HashSet<I>> {
-        &self.render_ids
+    pub fn get_tick_layered(&self) -> Option<&Layered<Layer, I>> {
+        self.tick_layers.as_ref()
     }
 
     #[inline]
-    pub fn take_tick_ids(&mut self) -> Option<HashSet<I>> {
-        self.tick_ids.take()
+    pub fn get_render_layered(&self) -> &Layered<Layer, I> {
+        &self.render_layers
     }
 
     #[inline]
-    pub fn give_tick_ids(&mut self, tick_ids: HashSet<I>) {
-        self.tick_ids = Some(tick_ids);
+    pub fn get_mut_tick_layered(&mut self) -> Option<&mut Layered<Layer, I>> {
+        self.tick_layers.as_mut()
+    }
+
+    #[inline]
+    pub fn get_mut_render_layered(&mut self) -> &mut Layered<Layer, I> {
+        &mut self.render_layers
+    }
+
+    #[inline]
+    pub fn take_tick_layered(&mut self) -> Option<Layered<Layer, I>> {
+        self.tick_layers.take()
+    }
+
+    #[inline]
+    pub fn give_tick_layered(&mut self, tick_layered: Layered<Layer, I>) {
+        self.tick_layers = Some(tick_layered);
     }
 }

@@ -10,6 +10,7 @@ pub mod actule {
     mod components;
     mod utils;
     mod input;
+    mod layer;
 
     pub use self::game::*;
     pub use self::world::*;
@@ -17,4 +18,5 @@ pub mod actule {
     pub use self::input::*;
     pub use self::components::*;
     pub use self::utils::*;
+    pub use self::layer::*;
 }

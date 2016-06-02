@@ -34,8 +34,8 @@ impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: En
         while let Some(e) = window.next() {
             window.draw_2d(&e, |c, g| {
                 clear([0.0, 0.0, 0.0, 1.0], g);
-                for layer in self.world.get_active_layers() {
-                    for entity_id in self.world.get_render_ids().get(layer).expect("Active layer wasn't a layer").iter() {
+                for layer in self.world.get_render_layered().get_active_layers() {
+                    for entity_id in self.world.get_render_layered().get_layer(layer).expect("Render layer was none").iter() {
                         if let Some(entity) = self.world.get_entity_by_id(*entity_id) {
                             if let Some(renderable) = entity.get_renderable() {
                                 renderable.draw_2d(c, g);
@@ -51,14 +51,16 @@ impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: En
                 self.minput.set_key(key, KeyState::Released);
             }
             if let Some(args) = e.update_args() {
-                if let Some(tick_ids) = self.world.take_tick_ids() {
-                    for id in tick_ids.iter() {
-                        if let Some(mut entity) = self.world.take_entity_by_id(*id) {
-                            entity.tick(args.dt, manager, &mut self.world, &self.minput);
-                            self.world.give_entity(entity);
+                if let Some(tick_layered) = self.world.take_tick_layered() {
+                    for layer in tick_layered.get_active_layers() {
+                        for entity_id in tick_layered.get_layer(layer).expect("Tick layer was none").iter() {
+                            if let Some(mut entity) = self.world.take_entity_by_id(*entity_id) {
+                                entity.tick(args.dt, manager, &mut self.world, &self.minput);
+                                self.world.give_entity(entity);
+                            }
                         }
                     }
-                    self.world.give_tick_ids(tick_ids);
+                    self.world.give_tick_layered(tick_layered);
                 }
             }
             e.mouse_cursor(|x, y| {
