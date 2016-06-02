@@ -8,6 +8,7 @@ pub struct Layered<T: Eq + Hash + Ord + Clone, I: Eq + Hash> {
 }
 
 impl<T: Eq + Hash + Ord + Clone, I: Eq + Hash> Layered<T, I> {
+    #[inline]
     pub fn new() -> Layered<T, I> {
         Layered {
             layers: Some(HashMap::new()),
@@ -30,28 +31,34 @@ impl<T: Eq + Hash + Ord + Clone, I: Eq + Hash> Layered<T, I> {
         self.layers = Some(layers);
     }
 
+    #[inline]
     pub fn remove(&mut self, layer_id: T, item: I) {
         if let Some(layer_set) = self.layers.as_mut().expect("Layers was none when removing").get_mut(&layer_id) {
             layer_set.remove(&item);
         }
     }
 
+    #[inline]
     pub fn get_layer(&self, layer_id: &T) -> Option<&HashSet<I>> {
         self.layers.as_ref().expect("Layers was none during get").get(&layer_id)
     }
 
+    #[inline]
     pub fn get_all(&self) -> Option<&HashMap<T, HashSet<I>>> {
         self.layers.as_ref()
     }
 
+    #[inline]
     pub fn get_active_layers(&self) -> &Vec<T> {
         &self.active_layers
     }
 
+    #[inline]
     pub fn take_all(&mut self) -> Option<HashMap<T, HashSet<I>>> {
         self.layers.take()
     }
 
+    #[inline]
     pub fn give_all(&mut self, all: HashMap<T, HashSet<I>>) {
         self.layers = Some(all);
     }

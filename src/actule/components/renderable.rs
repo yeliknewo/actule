@@ -15,6 +15,7 @@ pub struct Renderable {
 }
 
 impl Renderable {
+    #[inline]
     pub fn new(layer: Layer, polygon: Vec<Vector2<Coord>>, color: Color) -> Renderable {
         let mut polygon_piston = vec!();
         for point in polygon {
@@ -28,18 +29,22 @@ impl Renderable {
         }
     }
 
+    #[inline]
     pub fn draw_2d(&self, c: Context, g: &mut G2d) {
         polygon(self.color, &self.polygon, multiply(c.transform, self.matrix), g);
     }
 
+    #[inline]
     pub fn get_matrix(&self) -> &Matrix2d {
         &self.matrix
     }
 
+    #[inline]
     pub fn get_color(&self) -> &Color {
         &self.color
     }
 
+    #[inline]
     pub fn get_polygon(&self) -> Vec<Vector2<Coord>> {
         let mut polygon = vec!();
         for point in self.polygon.iter() {
@@ -48,22 +53,27 @@ impl Renderable {
         polygon
     }
 
+    #[inline]
     pub fn get_polygon_piston(&self) -> &Vec<Vec2d> {
         &self.polygon
     }
 
+    #[inline]
     pub fn get_layer(&self) -> Layer {
         self.layer
     }
 
+    #[inline]
     pub fn set_matrix(&mut self, matrix: Matrix2d) {
         self.matrix = matrix;
     }
 
+    #[inline]
     pub fn set_color(&mut self, color: Color) {
         self.color = color;
     }
 
+    #[inline]
     pub fn set_polygon(&mut self, polygon: Vec<Vector2<Coord>>) {
         let mut polygon_piston = vec!();
         for point in polygon {
@@ -72,10 +82,12 @@ impl Renderable {
         self.polygon = polygon_piston;
     }
 
+    #[inline]
     pub fn set_polygon_piston(&mut self, polygon: Vec<Vec2d>) {
         self.polygon = polygon;
     }
 
+    #[inline]
     pub fn set_layer(&mut self, layer: Layer) {
         self.layer = layer;
     }

@@ -48,19 +48,23 @@ impl Transform {
         }
     }
 
+    #[inline]
     pub fn get_isometry(&self) -> &Isometry2<Coord> {
         &self.isometry2
     }
 
+    #[inline]
     pub fn get_scale(&self) -> &Vector2<Coord> {
         &self.scale
     }
 
+    #[inline]
     pub fn get_mut_isometry(&mut self) -> &mut Isometry2<Coord> {
         self.dirty = true;
         &mut self.isometry2
     }
 
+    #[inline]
     pub fn get_mut_scale(&mut self) -> &mut Vector2<Coord> {
         self.dirty = true;
         &mut self.scale

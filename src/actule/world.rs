@@ -9,19 +9,31 @@ use actule::*;
 pub struct World<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> {
     entities: HashMap<I, T>,
     names: HashMap<&'static str, I>,
-    tick_layers: Option<Layered<Layer, I>>,
-    render_layers: Layered<Layer, I>,
+    tick_layered: Option<Layered<Layer, I>>,
+    render_layered: Layered<Layer, I>,
+    background_color: [f32; 4],
 }
 
 impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: Entity<I, T>> World<I, T> {
     #[inline]
-    pub fn new() -> World<I, T> {
+    pub fn new(background_color: [f32; 4]) -> World<I, T> {
         World {
             entities: HashMap::new(),
             names: HashMap::new(),
-            tick_layers: Some(Layered::new()),
-            render_layers: Layered::new(),
+            tick_layered: Some(Layered::new()),
+            render_layered: Layered::new(),
+            background_color: background_color,
         }
+    }
+
+    #[inline]
+    pub fn get_background_color(&self) -> [f32; 4] {
+        self.background_color
+    }
+
+    #[inline]
+    pub fn set_background_color(&mut self, color: [f32; 4]) {
+        self.background_color = color;
     }
 
     #[inline]
@@ -109,11 +121,11 @@ impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: En
         }
 
         if tick {
-            self.tick_layers.as_mut().expect("Tick Layers was none").add(tick_layer, id);
+            self.tick_layered.as_mut().expect("Tick Layers was none").add(tick_layer, id);
         }
 
         if render {
-            self.render_layers.add(render_layer, id);
+            self.render_layered.add(render_layer, id);
         }
     }
 
@@ -127,10 +139,10 @@ impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: En
             }
         }
         if let Some(layer) = tick_layer {
-            self.tick_layers.as_mut().expect("Tick layers was none").remove(layer, id);
+            self.tick_layered.as_mut().expect("Tick layered was none").remove(layer, id);
         }
         if let Some(layer) = render_layer {
-            self.render_layers.remove(layer, id);
+            self.render_layered.remove(layer, id);
         }
     }
 
@@ -142,31 +154,31 @@ impl<I: Num + Bounded + Ord + CheckedAdd + CheckedSub + One + Copy + Hash, T: En
 
     #[inline]
     pub fn get_tick_layered(&self) -> Option<&Layered<Layer, I>> {
-        self.tick_layers.as_ref()
+        self.tick_layered.as_ref()
     }
 
     #[inline]
     pub fn get_render_layered(&self) -> &Layered<Layer, I> {
-        &self.render_layers
+        &self.render_layered
     }
 
     #[inline]
     pub fn get_mut_tick_layered(&mut self) -> Option<&mut Layered<Layer, I>> {
-        self.tick_layers.as_mut()
+        self.tick_layered.as_mut()
     }
 
     #[inline]
     pub fn get_mut_render_layered(&mut self) -> &mut Layered<Layer, I> {
-        &mut self.render_layers
+        &mut self.render_layered
     }
 
     #[inline]
     pub fn take_tick_layered(&mut self) -> Option<Layered<Layer, I>> {
-        self.tick_layers.take()
+        self.tick_layered.take()
     }
 
     #[inline]
     pub fn give_tick_layered(&mut self, tick_layered: Layered<Layer, I>) {
-        self.tick_layers = Some(tick_layered);
+        self.tick_layered = Some(tick_layered);
     }
 }
