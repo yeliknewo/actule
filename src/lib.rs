@@ -2,6 +2,7 @@ pub extern crate id_alloc;
 pub extern crate piston_window;
 pub extern crate ncollide;
 pub extern crate nalgebra;
+pub extern crate gfx_device_gl;
 
 pub mod actule {
     mod game;
