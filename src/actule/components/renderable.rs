@@ -32,10 +32,10 @@ impl Renderable {
     pub fn get_mut_shape(&mut self) -> Option<&mut Shape> {
         self.shape.as_mut()
     }
-    pub fn get_texture(&self) -> Option<&MyImage> {
+    pub fn get_image(&self) -> Option<&MyImage> {
         self.image.as_ref()
     }
-    pub fn get_mut_texture(&mut self) -> Option<&mut MyImage> {
+    pub fn get_mut_image(&mut self) -> Option<&mut MyImage> {
         self.image.as_mut()
     }
 
@@ -45,7 +45,7 @@ impl Renderable {
     pub fn set_shape(&mut self, shape: Shape) {
         self.shape = Some(shape);
     }
-    pub fn set_texture(&mut self, image: MyImage) {
+    pub fn set_image(&mut self, image: MyImage) {
         self.image = Some(image);
     }
 
@@ -53,7 +53,7 @@ impl Renderable {
         self.shape = Some(shape);
         self
     }
-    pub fn with_texture(mut self, image: MyImage) -> Renderable {
+    pub fn with_image(mut self, image: MyImage) -> Renderable {
         self.image = Some(image);
         self
     }
