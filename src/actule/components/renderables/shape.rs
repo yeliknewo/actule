@@ -8,7 +8,6 @@ use actule::*;
 
 #[derive(Debug)]
 pub struct Shape {
-    layer: Layer,
     color: Color,
     polygon: Vec<Vec2d>,
     matrix: Matrix2d,
@@ -16,13 +15,12 @@ pub struct Shape {
 
 impl Shape {
     #[inline]
-    pub fn new(layer: Layer, polygon: Vec<Vector2<Coord>>, color: Color) -> Shape {
+    pub fn new(polygon: Vec<Vector2<Coord>>, color: Color) -> Shape {
         let mut polygon_piston = vec!();
         for point in polygon {
             polygon_piston.push([point.x, point.y]);
         }
         Shape {
-            layer: layer,
             color: color,
             polygon: polygon_piston,
             matrix: identity(),
@@ -59,11 +57,6 @@ impl Shape {
     }
 
     #[inline]
-    pub fn get_layer(&self) -> Layer {
-        self.layer
-    }
-
-    #[inline]
     pub fn set_matrix(&mut self, matrix: Matrix2d) {
         self.matrix = matrix;
     }
@@ -85,10 +78,5 @@ impl Shape {
     #[inline]
     pub fn set_polygon_piston(&mut self, polygon: Vec<Vec2d>) {
         self.polygon = polygon;
-    }
-
-    #[inline]
-    pub fn set_layer(&mut self, layer: Layer) {
-        self.layer = layer;
     }
 }

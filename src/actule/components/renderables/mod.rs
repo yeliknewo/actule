@@ -1,5 +1,5 @@
-pub mod texture;
+pub mod myimage;
 pub mod shape;
 
 pub use self::shape::*;
-pub use self::texture::*;
+pub use self::myimage::*;
