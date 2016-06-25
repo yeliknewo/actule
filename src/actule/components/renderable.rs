@@ -21,6 +21,9 @@ impl Renderable {
         if self.shape.is_some() {
             self.shape.as_ref().unwrap().draw_2d(c, g);
         }
+        if self.image.is_some() {
+            self.image.as_ref().unwrap().draw_2d(c, g);
+        }
     }
 
     pub fn get_layer(&self) -> Layer {
