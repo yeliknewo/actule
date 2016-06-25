@@ -23,7 +23,8 @@ impl MyImage {
     pub fn draw_2d(&self, c: Context, g: &mut G2d) {
         //this is not efficient at all!
         //i think this breaks stuff
-        c.draw_state.scissor(self.dimensions);
-        image(&self.texture, c.transform, g);
+        let temp_c = c;
+        temp_c.draw_state.scissor(self.dimensions);
+        image(&self.texture, temp_c.transform, g);
     }
 }
