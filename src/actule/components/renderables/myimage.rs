@@ -1,6 +1,7 @@
 use piston_window::{Context, G2d, Texture, TextureSettings};
 pub use gfx_device_gl::{Resources, Factory};
 use piston_window::image;
+use piston_window::draw_state::Stencil;
 //use piston_window::DrawState;
 
 
@@ -23,7 +24,8 @@ impl MyImage {
     pub fn draw_2d(&self, c: Context, g: &mut G2d) {
         //this is not efficient at all!
         //i think this breaks stuff
-        let temp_c = c;
+        let mut temp_c = c;
+        temp_c.draw_state.stencil = Some(Stencil::Inside(255));
         temp_c.draw_state.scissor(self.dimensions);
         image(&self.texture, temp_c.transform, g);
     }
