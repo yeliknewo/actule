@@ -17,7 +17,8 @@ pub mod actule {
     pub use self::world::*;
     pub use self::entity::*;
     pub use self::input::*;
-    pub use self::components::*;
+    pub use self::components::*; //gfx_device_gl Factory type lives here
     pub use self::utils::*;
     pub use self::layer::*;
+
 }
