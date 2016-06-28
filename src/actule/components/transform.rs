@@ -35,7 +35,7 @@ impl Transform {
 
     pub fn tick(&mut self, renderable: &mut Box<Renderable>) {
         if self.dirty {
-            renderable.get_mut_shape().unwrap().set_matrix(
+            renderable.set_matrix(
                 multiply(
                     multiply(
                         translate([self.isometry2.translation.x, self.isometry2.translation.y]),

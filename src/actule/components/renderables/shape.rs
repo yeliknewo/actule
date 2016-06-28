@@ -1,5 +1,5 @@
 use piston_window::{polygon, Context, G2d};
-use piston_window::math::{Matrix2d, Vec2d, identity, multiply};
+use piston_window::math::{Matrix2d, Vec2d, multiply};
 use piston_window::types::{Color};
 
 use nalgebra::{Vector2};
@@ -10,7 +10,6 @@ use actule::*;
 pub struct Shape {
     color: Color,
     polygon: Vec<Vec2d>,
-    matrix: Matrix2d,
 }
 
 impl Shape {
@@ -23,18 +22,12 @@ impl Shape {
         Shape {
             color: color,
             polygon: polygon_piston,
-            matrix: identity(),
         }
     }
 
     #[inline]
-    pub fn draw_2d(&self, c: Context, g: &mut G2d) {
-        polygon(self.color, &self.polygon, multiply(c.transform, self.matrix), g);
-    }
-
-    #[inline]
-    pub fn get_matrix(&self) -> &Matrix2d {
-        &self.matrix
+    pub fn draw_2d(&self, c: Context, g: &mut G2d, matrix: Matrix2d) {
+        polygon(self.color, &self.polygon, multiply(c.transform, matrix), g);
     }
 
     #[inline]
@@ -54,11 +47,6 @@ impl Shape {
     #[inline]
     pub fn get_polygon_piston(&self) -> &Vec<Vec2d> {
         &self.polygon
-    }
-
-    #[inline]
-    pub fn set_matrix(&mut self, matrix: Matrix2d) {
-        self.matrix = matrix;
     }
 
     #[inline]
