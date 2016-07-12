@@ -1,6 +1,6 @@
 [package]
 name = "actule"
-version = "0.4.10"
+version = "0.4.11"
 authors = ["Kiley Owen <yelikdev@gmail.com>"]
 
 [dependencies]
